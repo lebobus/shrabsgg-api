@@ -34,8 +34,8 @@ export class CreateUserUseCase extends UseCase<User> {
       createUserDto.name,
       createUserDto.email,
       createUserDto.password,
-      createUserDto.imageUrl,
       userAccounts,
+      createUserDto.favoriteChampions,
     );
 
     return andThenAsyncForResult(

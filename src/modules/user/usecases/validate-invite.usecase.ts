@@ -12,6 +12,7 @@ import { InviteRepository } from '../repositories/invite.repository';
 import { ValidateInviteDto } from '../dtos/actions/validate-invite.dto';
 import { InviteNotFoundError } from '../errors';
 import { InvalidInviteCodeError } from '../errors/invalid-invite-code.error';
+import { InviteAlreadyUsedError } from '../errors/invite-already-used.error';
 
 @Injectable()
 export class ValidateInviteUseCase extends UseCase<boolean> {
@@ -40,7 +41,11 @@ export class ValidateInviteUseCase extends UseCase<boolean> {
         }
 
         if (invite.code == validateInviteDto.code) {
-          return createOk(true);
+          if (invite.status == 'accepted') {
+            return createErr(new InviteAlreadyUsedError());
+          } else {
+            return createOk(true);
+          }
         } else {
           return createErr(new InvalidInviteCodeError());
         }

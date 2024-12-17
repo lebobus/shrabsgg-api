@@ -20,7 +20,7 @@ export class RiotApiService {
 
   constructor(private readonly httpService: HttpService) {}
 
-  async getSummonerById(summonerId: string): Promise<Summoner> {
+  async getSummonerById(): Promise<Summoner> {
     try {
       const link =
         'https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/Discipline%20Diff/0812';
@@ -94,13 +94,13 @@ export class RiotApiService {
     );
     const data = JSON.parse(fileContent);
 
-    const champions: Champion[] = [];
+    //const champions: Champion[] = [];
 
-    Object.values(data.data).forEach((championData: Partial<Champion>) => {
-      champions.push(new Champion(championData));
-    });
+    //Object.values(data.data).forEach((championData: Partial<Champion>) => {
+    //  champions.push(new Champion(championData));
+    //});
 
-    return champions;
+    return data;
   }
   // async getChampionss(): Promise<Champion[]> {
   //   try {

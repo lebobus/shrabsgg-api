@@ -1,6 +1,5 @@
 import { EntityManager } from '@mikro-orm/mongodb';
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { Result } from 'option-t/plain_result';
+import { Controller, Get, Param } from '@nestjs/common';
 import { RiotApiService } from '../services/riot-api.service';
 
 @Controller('riot')
@@ -28,5 +27,10 @@ export class RiotController {
     @Param('tagLine') tagLine: string,
   ) {
     return this.riotApiService.getSummonerByRiotId(gameName, tagLine);
+  }
+
+  @Get('/champions')
+  async getChampions() {
+    return this.riotApiService.getChampions();
   }
 }

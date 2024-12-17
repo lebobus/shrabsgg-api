@@ -16,18 +16,22 @@ export class User extends BaseEntity {
   password: string;
 
   @Property()
-  imageUrl: string;
+  accounts: UserAccount[];
 
   @Property()
-  accounts: UserAccount[];
+  favoriteChampions: UserFavoriteChampion[];
+
+  @Property()
+  imageUrl?: string | null;
 
   constructor(
     id: ObjectId,
     name: string,
     email: string,
     password: string,
-    imageUrl: string,
     accounts: UserAccount[],
+    favoriteChampions: UserFavoriteChampion[],
+    imageUrl?: string | null,
   ) {
     super(id);
 
@@ -35,7 +39,12 @@ export class User extends BaseEntity {
     this.name = name;
     this.email = email;
     this.password = password;
-    this.imageUrl = imageUrl;
     this.accounts = accounts;
+    this.favoriteChampions = favoriteChampions;
+    this.imageUrl = imageUrl;
   }
+}
+
+export interface UserFavoriteChampion {
+  name: string;
 }

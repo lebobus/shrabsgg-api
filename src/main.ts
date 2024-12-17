@@ -1,11 +1,20 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
-
 import { AppModule } from './modules/app.module';
-import { createServer } from 'http2';
+import { ExpressAdapter } from '@nestjs/platform-express';
+import express from 'express';
+
+import { Handler, Context, Callback } from 'aws-lambda';
+import createServer from '@vendia/serverless-express';
+
+let server: Handler;
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const expressApp = express();
+  const app = await NestFactory.create(
+    AppModule,
+    new ExpressAdapter(expressApp),
+  );
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -20,7 +29,16 @@ async function bootstrap() {
   );
 
   app.enableCors();
-  await app.listen(3000);
+  await app.init();
+
+  return createServer({ app: expressApp });
 }
 
-bootstrap().then(() => createServer());
+export const handler: Handler = async (
+  event: any,
+  context: Context,
+  callback: Callback,
+) => {
+  server = server ?? (await bootstrap());
+  return server(event, context, callback);
+};

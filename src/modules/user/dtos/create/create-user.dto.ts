@@ -17,6 +17,10 @@ export class CreateUserDto {
   imageUrl: string;
 
   @IsArray()
+  @Type(() => CreateUserFavoriteChampionDto)
+  favoriteChampions: CreateUserFavoriteChampionDto[];
+
+  @IsArray()
   @Type(() => CreateUserAccountDto)
   accounts: CreateUserAccountDto[];
 }
@@ -24,4 +28,9 @@ export class CreateUserDto {
 export class CreateUserAccountDto {
   @IsString()
   summonerId: string;
+}
+
+export class CreateUserFavoriteChampionDto {
+  @IsString()
+  name: string;
 }
