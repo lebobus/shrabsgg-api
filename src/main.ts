@@ -4,13 +4,9 @@ import { AppModule } from './modules/app.module';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import express from 'express';
 
-import { Handler, Context, Callback } from 'aws-lambda';
-import createServer from '@vendia/serverless-express';
-
-let server: Handler;
+const expressApp = express();
 
 async function bootstrap() {
-  const expressApp = express();
   const app = await NestFactory.create(
     AppModule,
     new ExpressAdapter(expressApp),
@@ -21,24 +17,17 @@ async function bootstrap() {
       whitelist: true,
       forbidNonWhitelisted: true,
       transform: true,
-      validationError: {
-        target: false,
-        value: false,
-      },
     }),
   );
 
   app.enableCors();
   await app.init();
 
-  return createServer({ app: expressApp });
+  return expressApp;
 }
 
-export const handler: Handler = async (
-  event: any,
-  context: Context,
-  callback: Callback,
-) => {
-  server = server ?? (await bootstrap());
-  return server(event, context, callback);
-};
+// Default export required by Vercel
+export default async function handler(req: any, res: any) {
+  const app = await bootstrap();
+  return app(req, res);
+}

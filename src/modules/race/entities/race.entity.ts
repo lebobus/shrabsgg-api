@@ -1,5 +1,5 @@
 import { Entity, Property, EntityRepositoryType } from '@mikro-orm/core';
-import { BaseEntity } from 'src/common/domain';
+import { BaseEntity } from '../../../common/domain/entities/base.entity';
 import { ObjectId } from '@mikro-orm/mongodb';
 import { RaceRepository } from '../repositories/race.repository';
 import { RaceParticipant } from './race-participant.entity';

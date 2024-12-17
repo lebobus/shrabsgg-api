@@ -1,5 +1,5 @@
 import { Property, EntityRepositoryType, Embeddable } from '@mikro-orm/core';
-import { BaseEntity } from 'src/common/domain';
+import { BaseEntity } from '../../../common/domain/entities/base.entity';
 import { ObjectId } from '@mikro-orm/mongodb';
 import { UserRepository } from '../repositories/user.repository';
 
