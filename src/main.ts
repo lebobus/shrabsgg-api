@@ -1,33 +1,25 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
-import { AppModule } from './modules/app.module';
-import { ExpressAdapter } from '@nestjs/platform-express';
-import express from 'express';
 
-const expressApp = express();
+import { AppModule } from './modules/app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(
-    AppModule,
-    new ExpressAdapter(expressApp),
-  );
+  const app = await NestFactory.create(AppModule);
 
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
       forbidNonWhitelisted: true,
       transform: true,
+      validationError: {
+        target: false,
+        value: false,
+      },
     }),
   );
 
   app.enableCors();
-  await app.init();
-
-  return expressApp;
+  await app.listen(3000);
 }
 
-// Default export required by Vercel
-export default async function handler(req: any, res: any) {
-  const app = await bootstrap();
-  return app(req, res);
-}
+bootstrap();
